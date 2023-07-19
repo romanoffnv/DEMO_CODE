@@ -7,14 +7,12 @@ sys.path.append(parent_dir)
 
 from __init__ import *
 from DC_settings import *
+from PROCESSOR._main import main as processor
 
 
 def main():
-    src_dir = parent_dir + '\_SRC'
-    db = db_connect('cnx', db_name = 'data.db')
-    
-    pprint(src_dir)
-    pprint('hello wolrd')
+    prssor = processor() 
+    pprint(prssor)
     
     
 if __name__ == '__main__':
