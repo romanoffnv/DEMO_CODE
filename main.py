@@ -8,11 +8,15 @@ sys.path.append(parent_dir)
 from __init__ import *
 from DC_settings import *
 from PROCESSOR._main import main as processor
+from GUI._main import main as gui
 
 
 def main():
-    prssor = processor() 
-    pprint(prssor)
+    pprint('main.py')
+    pprint('Running the PROCESSOR Module')
+    pprint(processor())
+    pprint('Running the GUI Module')
+    pprint(gui())
     
     
 if __name__ == '__main__':

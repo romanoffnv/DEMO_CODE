@@ -7,21 +7,9 @@ sys.path.append(parent_dir)
 
 from __init__ import *
 from DC_settings import *
-from GUI.button_field import main as button_field
-from GUI.screen_field import main as screen_field
-from GUI.warning_field import main as warning_field
-
 
 def main():
-    pprint('GUI/_main.py')
-    
-    btn_field = button_field()
-    scrn_field = screen_field()
-    wrn_field = warning_field()
-    
-    
-    
-    
+    pprint('PROCESSOR/_main.py/src1_api_get.py')
 
 if __name__ == '__main__':
     main()
