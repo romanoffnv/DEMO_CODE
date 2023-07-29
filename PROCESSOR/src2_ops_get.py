@@ -9,7 +9,20 @@ from __init__ import *
 from DC_settings import *
 
 def main():
-    pprint('PROCESSOR/_main.py/src2_ops_get.py')
+    SRC_DIR = parent_dir + '\SRC'
+    pprint(SRC_DIR)
+    def open_src2():
+        for filename in os.listdir(SRC_DIR):
+            f = os.path.join(SRC_DIR, filename)
+            if os.path.isfile(f):
+                if re.findall(f'dispatch', f):
+                    dispatch = f
+                
+        return pd.read_excel(dispatch) 
+    return open_src2()
+    
+
+    # pprint('PROCESSOR/_main.py/src2_ops_get.py')
 
 if __name__ == '__main__':
     main()

@@ -8,8 +8,9 @@ sys.path.append(parent_dir)
 from __init__ import *
 from DC_settings import *
 
-def main():
+def main(src2_get):
     pprint('PROCESSOR/_main.py/src2_ops_parse.py')
+    pprint(src2_get)
 
 if __name__ == '__main__':
     main()
