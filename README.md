@@ -13,6 +13,7 @@ PROCESSOR<br>
     'PROCESSOR/_main.py/src3_drvs_get.py'<br>
     'PROCESSOR/_main.py/src3_drvs_parse.py'<br>
     'PROCESSOR/_main.py/src3_drvs_validator.py'<br>
+    'PROCESSOR/_main.py/plates_parser.py'<br>
     'PROCESSOR/_main.py/uniplates.py'<br>
     'PROCESSOR/_main.py/user_report.py'<br><br>
 
@@ -52,6 +53,8 @@ PROCESSOR'<br>
         ```'Модуль парсит df_src3, после преобразований и трансформаций передает df_src3 в src3_drvs_validator.py'```<br>
     ---> 'PROCESSOR/_main.py/src3_drvs_validator.py'<br>
         ```'src3_drvs_validator.py это однослойная нейронная сеть, прогоняет колонки данных из df_src3 в циклах обучения forwardprop и backprop, определенные как "гос.номера", отфильтровывая данные, не прошедшие по параметрам как True. Возвращает очищенный df_src3 в _main.py'```<br>
+    ---> 'PROCESSOR/_main.py/plates_parser.py'<br>
+        ```'plates_parser.py общий модуль для компонента PROCESSOR, который парсит номера автомобилей из разных источников при помощи универсального регулярного выражения'```<br>    
     ---> 'PROCESSOR/_main.py/uniplates.py'<br>
         ```'uniplates.py принимает df_src1, df_src2, df_src3 из _main.py, где преобразовывает колонки номеров из этих датафреймов в сопоставимый вид, далее отправляет эти дата фреймы в user_report.py'```<br>
     ---> 'PROCESSOR/_main.py/user_report.py'<br>

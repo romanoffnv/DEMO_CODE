@@ -19,7 +19,6 @@ from PROCESSOR.user_report import main as user_report
 
 def main():
     pprint('PROCESSOR/_main.py')
-    
     src1_get = src1_api_get()
     src1_parse = src1_api_parse(src1_get)
     pprint(src1_parse)
