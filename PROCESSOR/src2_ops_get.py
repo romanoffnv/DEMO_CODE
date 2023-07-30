@@ -2,15 +2,15 @@
 import os
 import sys
 
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.append(parent_dir)
-
 from __init__ import *
 from DC_settings import *
 
-def main():
+def main(parent_dir):
+    # Октрываем источник DEMO_CODE_dispatch.xlsx в df
+    # Дополняем ссылку от родительской к папке с источниками
     SRC_DIR = parent_dir + '\SRC'
-    pprint(SRC_DIR)
+    
+    # Функция преберет все файлы в папке с источниками и вернет открытый источник в виде df если в его названии будет dispatch
     def open_src2():
         for filename in os.listdir(SRC_DIR):
             f = os.path.join(SRC_DIR, filename)

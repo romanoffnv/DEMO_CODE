@@ -2,16 +2,12 @@
 import os
 import sys
 
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.append(parent_dir)
-
 from __init__ import *
 from DC_settings import *
 
 from PROCESSOR.plates_parser import main as plates_parser
 
 def main(src1_get):
-    pprint('PROCESSOR/_main.py/src1_api_parse.py')
     L_units = [x['name'] for x in src1_get]
     L_plates = [x for x in L_units]
     L_plates = plates_parser(L_plates)

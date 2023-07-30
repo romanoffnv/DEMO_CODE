@@ -2,130 +2,151 @@
 import os
 import sys
 
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.append(parent_dir)
-
 from __init__ import *
 from DC_settings import *
 
 from PROCESSOR.plates_parser import main as plates_parser
 
+# Функция перераспределения колонок в нужном порядке
+def arrange_cols(df, cols):
+    return df[cols]
+
+# Функция по очистке датафрейма
+def clean_df_headers(df, col_keyword_pairs):
+    for keyword, colnames in col_keyword_pairs.items():
+        for colname in colnames:
+            df[colname][df[colname].apply(lambda val: any(re.findall(keyword, str(val))))] = np.nan
+    return df
+
+# Функция заполнения пустот
+def fill_nans(df, colname):
+    df[colname] = df[colname].fillna(method='ffill')
+    return df
+    
 def main(src2_get):
+    """
+    df из источника представляет собой оперативную сводку, за дневную и ночную смену, ориентированную на визуализацию. 
+    Сводка используется как опорный материал при проведении селекторных совещаний. Требуется привести данные, полученные из источника в матричный вид, 
+    для последующей выгрузки в БД. Из-за слияния некоторых ячеек в экселе и разбивки данных на 2 смены, при трансформации данных стоят задачи по 
+    выравниваю строк по горизонтали, и слиянию таблиц 2х смен по вертикали, при вертикальном распределении общих параметров.
+    """ 
+
     df = src2_get
     
-    # Собираем дату из ячейки
+    
+    # Собираем текущую дату из заголовка колонки 0 в df, так как она распредилилась в название заголовка при открытии источника в src2_ops_get.py
     date = df.columns[0]
     L_date = [date.strftime('%d.%m.%Y')]
     
-    # Забираем марки автомобилей и административные округи в листы
-    def listing_cars_locs(col, df, flag):
-        L = df.iloc[:, col].tolist()
-        L = [str(x) for x in L]
-        if flag:
-            L = [''.join(re.findall('[A-z]+', x)) for x in L]
-        L = [x for x in L if x != '' and x != 'nan']
-        return L
+    # Задаем колонкам нужные имена
+    df.rename(columns=
+              {
+                  df.columns[0]: 'General', 
+                  df.columns[1]: 'Locations',
+                  df.columns[2]: 'Units',
+                  df.columns[3]: 'Tasks',
+                  df.columns[4]: 'Urgency',
+                  df.columns[5]: 'Mileage',
+                  df.columns[6]: 'Units_2',
+                  df.columns[7]: 'Tasks_2',
+                  df.columns[8]: 'Urgency_2',
+                  df.columns[9]: 'Mileage_2',
+                  }, inplace=True)
     
-    L_brands = listing_cars_locs(0, df, True)
-    L_locations = listing_cars_locs(1, df, False)
+    # Вставляем новую пустую колонку под марки автомобилей, которые вытянем из колонки 'General'
+    df['Brands'] = np.nan
+   
+    # Переносим марки автомобилей типа "Chevrolet" в колонку Brands из колонки 'General', используя regex
+    for idx, val in df['General'].items():
+        if re.findall('[A-z]+', str(val)):
+            df.loc[idx, 'Brands'] = val
+    # Убираем смешанную колонку 'General' за ненадобностью
+    df = df.drop(columns=['General'])
     
-    # Собираем индексы границ секций блока марок автомобилей в лист
-    L_section_borders = []
-    for idx, val in df.iloc[:, 0].items():
-        if val in L_brands:
-            L_section_borders.append(idx)
-    L_section_borders.append(df.index[-1])
+    # Дублируем колонки "Brands" и "Locations" для выравнивая df по вертикали
+    df['Brands_2'] = df['Brands']
+    df['Locations_2'] = df['Locations']
+        
+    # Перераспределяем колонки в нужном порядке, отправляя лист в функцию arrange_cols
+    df = arrange_cols(df, ['Brands', 'Locations', 'Units', 'Tasks', 'Urgency', 'Mileage',
+                            'Brands_2', 'Locations_2', 'Units_2', 'Tasks_2', 'Urgency_2', 'Mileage_2',])
     
-    # Собираем блоки автомобилей в виде отдельных df в лист
-    L_group_dfs = []
-    for i in range(len(L_section_borders) - 1):
-        start_idx = L_section_borders[i]
-        end_idx = L_section_borders[i + 1]
-        brand_section_data = df.iloc[start_idx:end_idx + 1]
-        L_group_dfs.append(brand_section_data)
-        
-    # Create a new DataFrame to hold the final result
-    final_df = pd.DataFrame()
+    # Чистим df от ненужных заголовков, унаследованных из источника
+    # Маппим регексы на нужные колонки df в словаре
+    col_keyword_pairs = {
+        'втомоб': ('Units', 'Units_2'),
+        'Задание': ('Tasks', 'Tasks_2'),
+        'Приоритет': ('Urgency', 'Urgency_2'),
+        'Пробег': ('Mileage', 'Mileage_2'),
+    }
 
-    # Iterate over the grouped DataFrames
-    for idx, i in enumerate(L_group_dfs):
-        pprint(L_brands[idx])
-        pprint(idx)
-        pprint(L_brands[0])
-        pprint(L_brands[1])
-        L_brand = L_brands[idx]
-        L_location = L_locations[idx]
+    # Отправляем словарь в функцию clean_df_headers, получаем очищенный df
+    df = clean_df_headers(df, col_keyword_pairs)
+    
+    
+    # Заполняем пустоты в колонках
+    L_colnames = ['Brands', 'Brands_2', 'Locations', 'Locations_2']
+    for i in L_colnames:
+        df = fill_nans(df, i)
+    
+    
+    # Разбиваем df на группы по маркам автомобилей 'Brands'
+    grouped_df = df.groupby('Brands')
+    
+    # Создаем лист для сборки групп после преобразований
+    merged_groups = []
+    # Проходим по листу с группами
+    for group_name, group_df in grouped_df:
+        # Разбиваем группы на 2 отделения: дневной и ночной смены
+        df1 = group_df[['Brands', 'Locations', 'Units', 'Tasks', 'Urgency', 'Mileage']]
+        df2 = group_df[['Brands_2', 'Locations_2', 'Units_2', 'Tasks_2', 'Urgency_2', 'Mileage_2']]
+        # Сливаем их относительно друг друга по вертикали по всем группам
+        concatenated_df = pd.concat([df1, df2], axis=0)
+        # Загоняем преобразованные группы в лист для сборки
+        merged_groups.append(concatenated_df)
         
-        # Разбиваем df на 2 подблока по колонкам "Дневная смена", "Ночная смена"
-        day = i.iloc[:, 2:6]
-        night = i.iloc[:, 6:11]
-        
-        # Сбрасываем пустые значения перед склеиванием
-        day = day.dropna()
-        night = night.dropna()
-        
-        #  Склеиваем df блоки вертикально
-        df_concat = pd.concat([day, night], axis=0).reset_index(drop=True)
+    # Собираем группы в единый датафрейм
+    df = pd.concat(merged_groups, axis=0)
+    
+    
+    # Переносим значения из "ночного блока" в "дневной" при помощи паттерн маски
+    mask = df['Brands'].isnull() & ~df['Brands_2'].isnull()
+    df.loc[mask, 'Brands'] = df.loc[mask, 'Brands_2']
+    df.loc[mask, 'Locations'] = df.loc[mask, 'Locations_2']
+    df.loc[mask, 'Units'] = df.loc[mask, 'Units_2']
+    df.loc[mask, 'Tasks'] = df.loc[mask, 'Tasks_2']
+    df.loc[mask, 'Urgency'] = df.loc[mask, 'Urgency_2']
+    df.loc[mask, 'Mileage'] = df.loc[mask, 'Mileage_2']
 
-        # Перебираем df, если ячейка в нулевой колонке пустая, а ячейка в 4й колонке со значением, переносим значения из "ночного блока" в "дневной"
-        for idx, row in df_concat.iterrows():
-            if pd.isna(row[0]) and not pd.isna(row[4]):
-                df_concat.at[idx, df_concat.columns[0]] = df_concat.at[idx, df_concat.columns[4]]
-                df_concat.at[idx, df_concat.columns[1]] = df_concat.at[idx, df_concat.columns[5]]
-                df_concat.at[idx, df_concat.columns[2]] = df_concat.at[idx, df_concat.columns[6]]
-                df_concat.at[idx, df_concat.columns[3]] = df_concat.at[idx, df_concat.columns[7]]
-        
-        # Убираем лишние колонки
-        df_concat = df_concat.iloc[:, 0:4]
-        
-        # Чистим df от ненужных заголовков
-        for idx, row in df_concat.iloc[:, 0].iteritems():
-            if row == 'Автомобиль':
-                df_concat.iloc[idx, 0] = np.nan
-            
-        df_concat = df_concat.dropna(subset=df_concat.columns[0:1])
-        
-        # Add Brand and Location columns
-        df_concat['Brand'] = L_brand
-        df_concat['Locations'] = L_location
-
-        # Append the current group's data to the final DataFrame
-        final_df = final_df.append(df_concat, ignore_index=True)
-    df = final_df
-    # Уравниваем лист с единственным значением даты по длине с df
+    # Убираем ненужные исходные колонки ночной смены
+    df = df.loc[:, ['Brands', 'Locations', 'Units', 'Tasks', 'Urgency', 'Mileage']]
+    
+    # Равняем df, убирая лишние пустоты
+    df = df.dropna(subset=['Units'], thresh=1)
+    df.reset_index(drop=True, inplace=True)
+    
+    # Выравниваем лист с датой по длине с датафреймом
     L_date = L_date * len(df)
     df['Date'] = L_date
     
-    # Забираем колонку с названиями автомобилей для парсинга номеров
-    L_plates = df.iloc[:, 0].tolist()
+    # Забираем колонку с названиями автомобилей и их номерами для парсинга номеров
+    L_plates = df.loc[:, 'Units'].tolist()
+    # Отправляем лист во вспомогательный модуль
     L_plates = plates_parser(L_plates)
+    # Добавляем лист в качестве колонки
     df['Plates'] = L_plates
     
-    # Задаем колонкам имена
-    df.rename(columns=
-              {
-                  df.columns[0]: 'Units', 
-                  df.columns[1]: 'Tasks',
-                  df.columns[2]: 'Urgency',
-                  df.columns[3]: 'Mileage',
-                  }, inplace=True)
-
-    # Перераспределяем колонки в нужном порядке
+    # Перераспределяем колонки в нужном порядке, отправляя лист в функцию arrange_cols
+    df = arrange_cols(df, ['Date', 'Brands', 'Locations','Units', 
+                           'Plates', 'Tasks', 'Urgency', 'Mileage'])
     
-    cols = df.columns.tolist()
-    cols = ['Date',
-            'Brand',
-            'Locations',
-            'Units',
-            'Plates',
-            'Tasks',
-            'Urgency',
-            'Mileage',
-            ]
-    df = df[cols]
-    # Display the final DataFrame
+    
+    # Показываем df с настраиваемыми параметрами
     print_val = df
     pprint(print_val, set_pandas_options(print_val, width=1000, colwidth=20, colmap = False))
+    
+    return df
+   
     
 if __name__ == '__main__':
     main()

@@ -18,10 +18,9 @@ from PROCESSOR.uniplates import main as uniplates
 from PROCESSOR.user_report import main as user_report
 
 def main():
-    pprint('PROCESSOR/_main.py')
     src1_get = src1_api_get()
     src1_parse = src1_api_parse(src1_get)
-    src2_get = src2_ops_get()
+    src2_get = src2_ops_get(parent_dir)
     src2_parse = src2_ops_parse(src2_get)
     # src3_get = src3_drvs_get()
     # src3_parse = src3_drvs_parse()
