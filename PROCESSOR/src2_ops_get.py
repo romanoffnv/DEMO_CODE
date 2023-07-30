@@ -22,7 +22,7 @@ def main():
     return open_src2()
     
 
-    # pprint('PROCESSOR/_main.py/src2_ops_get.py')
+
 
 if __name__ == '__main__':
     main()
