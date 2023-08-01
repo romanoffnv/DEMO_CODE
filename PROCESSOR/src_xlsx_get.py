@@ -5,21 +5,21 @@ import sys
 from __init__ import *
 from DC_settings import *
 
-def main(parent_dir):
+def main(parent_dir, fname):
     # Октрываем источник DEMO_CODE_dispatch.xlsx в df
     # Дополняем ссылку от родительской к папке с источниками
     SRC_DIR = parent_dir + '\SRC'
     
     # Функция преберет все файлы в папке с источниками и вернет открытый источник в виде df если в его названии будет dispatch
-    def open_src2():
+    def src_xlsx_get(fname):
         for filename in os.listdir(SRC_DIR):
             f = os.path.join(SRC_DIR, filename)
             if os.path.isfile(f):
-                if re.findall(f'dispatch', f):
-                    dispatch = f
+                if re.findall(re.escape(fname), f):
+                    fname = f
                 
-        return pd.read_excel(dispatch) 
-    return open_src2()
+        return pd.read_excel(fname) 
+    return src_xlsx_get(fname)
     
 
 
