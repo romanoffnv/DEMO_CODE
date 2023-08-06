@@ -8,9 +8,8 @@ PROCESSOR<br>
     'PROCESSOR/_main.py'<br>
     'PROCESSOR/_main.py/src1_api_get.py'<br>
     'PROCESSOR/_main.py/src1_api_parse.py'<br>
-    'PROCESSOR/_main.py/src2_ops_get.py'<br>
+    'PROCESSOR/_main.py/src_xlsx_get'<br>
     'PROCESSOR/_main.py/src2_ops_parse.py'<br>
-    'PROCESSOR/_main.py/src3_drvs_get.py'<br>
     'PROCESSOR/_main.py/src3_drvs_parse.py'<br>
     'PROCESSOR/_main.py/src3_drvs_validator.py'<br>
     'PROCESSOR/_main.py/plates_parser.py'<br>
@@ -43,12 +42,10 @@ PROCESSOR'<br>
         ```'Модуль коннектится с веб-ресурсом по API и получает данные в форматие json, файл не сохраняется на локальной машине, а процессится в ходе рантайма'```<br>
     ---> 'PROCESSOR/_main.py/src1_api_parse.py'<br>
         ```'Модуль парсит данные из файла json в дата фрейм df_src1, возвращает df_src1 в _main.py'```<br>
-    ---> 'PROCESSOR/_main.py/src2_ops_get.py'<br>
-        ```'Модуль открывает источник оперативной сводки DEMO_CODE_dispatch.xlsx в формате дата фрейм df_src2'```<br>
+    ---> 'PROCESSOR/_main.py/src_xlsx_get.py'<br>
+        ```'Модуль открывает источники в формате xlsx и возвращает их в виде датафреймов'```<br>
     ---> 'PROCESSOR/_main.py/src2_ops_parse.py'<br>
         ```'Модуль парсит df_src2, после преобразований и трансформаций возвращает df_src2 в _main.py'```<br>
-    ---> 'PROCESSOR/_main.py/src3_drvs_get.py'<br>
-        ```'Модуль открывает источник оперативной сводки DEMO_CODE_drivers.xlsx в формате дата фрейм df_src3'```<br>
     ---> 'PROCESSOR/_main.py/src3_drvs_parse.py'<br>
         ```'Модуль парсит df_src3, после преобразований и трансформаций передает df_src3 в src3_drvs_validator.py'```<br>
     ---> 'PROCESSOR/_main.py/src3_drvs_validator.py'<br>

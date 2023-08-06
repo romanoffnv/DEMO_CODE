@@ -8,8 +8,8 @@ from DC_settings import *
 from PROCESSOR.plates_parser import main as plates_parser
 
 # Функция перераспределения колонок в нужном порядке
-def arrange_cols(df, cols):
-    return df[cols]
+# def arrange_cols(df, cols):
+#     return df[cols]
 
 # Функция по очистке датафрейма
 def clean_df_headers(df, col_keyword_pairs):
@@ -18,10 +18,6 @@ def clean_df_headers(df, col_keyword_pairs):
             df[colname][df[colname].apply(lambda val: any(re.findall(keyword, str(val))))] = np.nan
     return df
 
-# Функция заполнения пустот
-def fill_nans(df, colname):
-    df[colname] = df[colname].fillna(method='ffill')
-    return df
     
 def main(src2_get):
     """
@@ -136,14 +132,10 @@ def main(src2_get):
     # Добавляем лист в качестве колонки
     df['Plates'] = L_plates
     
-    # Перераспределяем колонки в нужном порядке, отправляя лист в функцию arrange_cols
+    # Перераспределяем колонки в нужном порядке, отправляя лист в функцию arrange_cols 
+    # во вспомогательном модуле DC_settings.py
     df = arrange_cols(df, ['Date', 'Brands', 'Locations','Units', 
                            'Plates', 'Tasks', 'Urgency', 'Mileage'])
-    
-    
-    # Показываем df с настраиваемыми параметрами
-    print_val = df
-    pprint(print_val, set_pandas_options(print_val, width=1000, colwidth=20, colmap = False))
     
     return df
    

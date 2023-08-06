@@ -64,3 +64,12 @@ def set_pandas_options(df, width, colwidth, colmap):
 
 # print_val = df_trans
 # pprint(print_val, set_pandas_options(print_val, width=1000, colwidth=100, colmap = False))
+
+# Функция перераспределения колонок в нужном порядке
+def arrange_cols(df, cols):
+    return df[cols]
+
+# Функция заполнения пустот
+def fill_nans(df, colname):
+    df[colname] = df[colname].fillna(method='ffill')
+    return df
