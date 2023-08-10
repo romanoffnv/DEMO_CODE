@@ -45,9 +45,6 @@ def main(src3_get):
     copy_col('АО', 'Locations')
     copy_col(r'[А-я]\s*\d{3}\s*[А-я]{2}\s*\d+\S+', 'Units')
     
-    # Перераспределяем колонки в нужном порядке, отправляя лист в функцию arrange_cols 
-    # во вспомогательном модуле DC_settings.py
-    df = arrange_cols(df, ['Brands', 'Units', 'Locations', 'Drivers', 'Ratings'])
     
     # Заполняем пустоты в колонках
     L_colnames = ['Brands', 'Locations']
@@ -65,10 +62,12 @@ def main(src3_get):
     L_plates = [[re.sub(',', ', ', i[0]) + i[1] if len(i) > 1 else re.sub(',', '', i[0])] for i in L_plates]
     L_plates = [x[0].split(',') for x in L_plates]
     
-    
-    pprint(L_plates)
     # Добавляем лист в качестве колонки
     df['Plates'] = L_plates
+    
+    # Перераспределяем колонки в нужном порядке, отправляя лист в функцию arrange_cols 
+    # во вспомогательном модуле DC_settings.py
+    df = arrange_cols(df, ['Brands', 'Locations', 'Units', 'Plates',  'Drivers', 'Ratings'])
     
     return df
 
