@@ -65,6 +65,11 @@ def main(src3_get):
     # Добавляем лист в качестве колонки
     df['Plates'] = L_plates
     
+    # Парсим названия автомобилей
+    L_units = df.loc[:, 'Units'].tolist()
+    regex = r'([A-z]+\s[A-z]+\-*\d*)|([A-z]+\s\d\s\Series*)|([A-z].*Class)|([A-z].*GLE)'
+    L_units = [''.join(match for match in re.findall(regex, x)[0] if match) for x in L_units]
+    df['Units'] = L_units
     # Перераспределяем колонки в нужном порядке, отправляя лист в функцию arrange_cols 
     # во вспомогательном модуле DC_settings.py
     df = arrange_cols(df, ['Brands', 'Locations', 'Units', 'Plates',  'Drivers', 'Ratings'])
