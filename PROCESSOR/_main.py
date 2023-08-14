@@ -18,17 +18,15 @@ from PROCESSOR.uniplates import main as uniplates
 from PROCESSOR.user_report import main as user_report
 
 def main():
-    # src1_get = src1_api_get()
-    # src1_parse = src1_api_parse(src1_get)
+    src1_get = src1_api_get()
+    src1_parse = src1_api_parse(src1_get)
     src2_get = src_xlsx_get(parent_dir, fname = 'dispatch')
     src2_parse = src2_ops_parse(src2_get)
     src3_get = src_xlsx_get(parent_dir, fname = 'drivers')
     src3_parse = src3_drvs_parse(src3_get)
-    # pprint(src1_parse)
-    # pprint(src2_parse)
-    # pprint(src3_parse)
     src3_validator = src3_drvs_validator(src3_parse)
-    # uniplates_generalizer = uniplates()
+    uniplates_generalizer = uniplates(src1_parse, src2_parse, src3_validator)
+    pprint(uniplates_generalizer)
     # userrep = user_report()
     
         

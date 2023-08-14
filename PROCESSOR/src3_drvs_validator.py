@@ -88,25 +88,26 @@ def main(src3_parse):
         valid_2.append(is_valid_2)
             
     df_verif = pd.DataFrame(zip(col_1, valid_1, col_2, valid_2), columns = ['Plates_1', 'Verif_1', 'Plates_2', 'Verif_2'])
-    pprint(df_verif)
+    
     for index, (p1, v1, p2, v2) in df_verif[['Plates_1', 'Verif_1', 'Plates_2', 'Verif_2']].iterrows():
         if np.any(v1 == False):
            df_verif.at[index, 'Plates_1'] = np.nan
         elif np.any(v2 == False):
             df_verif.at[index, 'Plates_2'] = np.nan
-    pprint(df_verif) 
     
-    df_merge = df_verif.loc[:, ['Plates_1', 'Plates_2']]
-    pprint(df_merge)
     
-    for index, (p1, p2) in df_merge[['Plates_1', 'Plates_2']].iterrows():
+    df_base = df_verif.loc[:, ['Plates_1', 'Plates_2']]
+    
+    for index, (p1, p2) in df_base[['Plates_1', 'Plates_2']].iterrows():
         if not pd.isna(p2):
-            df_merge.at[index, 'Plates_1'] = p2
-            df_merge.at[index, 'Plates_2'] = np.nan
+            df_base.at[index, 'Plates_1'] = p2
+            df_base.at[index, 'Plates_2'] = np.nan
 
-    L_plates = df_merge['Plates_1'].tolist()
+    L_plates = df_base['Plates_1'].tolist()
     df['Plates'] = L_plates
-    pprint(df)
+    
+    return df
+    
 if __name__ == '__main__':
     main()
     start_time = time.time()
