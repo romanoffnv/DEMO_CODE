@@ -1,10 +1,3 @@
-# Global imports (for independent module run)
-# import os
-# import sys
-
-# parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-# sys.path.append(parent_dir)
-
 from __init__ import *
 from DC_settings import *
 

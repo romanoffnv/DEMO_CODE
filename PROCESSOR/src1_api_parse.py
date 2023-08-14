@@ -8,7 +8,7 @@ def main(src1_get):
     L_plates = [x for x in L_units]
     L_plates = plates_parser(L_plates)
     L_status = [x['status'] for x in src1_get]
-    L_locations = [tuple(x['location']) for x in src1_get]
+    L_locations = [str(x['location']) for x in src1_get]
     
     return pd.DataFrame(zip(L_units, L_plates, L_status, L_locations), columns = ['Units', 'Plates',  'Status', 'Coordinates'])
     
