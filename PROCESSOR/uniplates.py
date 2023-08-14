@@ -20,9 +20,7 @@ def main(src1_parse, src2_parse, src3_validator):
     src1_parse = uniplate(src1_parse)
     src2_parse = uniplate(src2_parse)
     src3_validator = uniplate(src3_validator)
-    # pprint(src1_parse)
-    # pprint(src2_parse)
-    # pprint(src3_validator)
+   
     return src1_parse, src2_parse, src3_validator 
 if __name__ == '__main__':
     main()

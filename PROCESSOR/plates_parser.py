@@ -1,7 +1,3 @@
-# Global imports (for independent module run)
-import os
-import sys
-
 from __init__ import *
 from DC_settings import *
 

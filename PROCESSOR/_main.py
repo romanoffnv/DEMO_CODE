@@ -26,8 +26,8 @@ def main():
     src3_parse = src3_drvs_parse(src3_get)
     src3_validator = src3_drvs_validator(src3_parse)
     uniplates_generalizer = uniplates(src1_parse, src2_parse, src3_validator)
-    pprint(uniplates_generalizer)
-    # userrep = user_report()
+    userrep = user_report(uniplates_generalizer)
+    pprint(userrep)
     
         
 
