@@ -23,12 +23,12 @@ def main(src3_get):
     # Оставляем нужные колонки
     df = df.loc[:, ['General', 'Drivers', 'Ratings']]
     
-    # Derivating new cols
+    # Создаем новые колонки
     df['Brands'] = np.nan
     df['Locations'] = np.nan
     df['Units'] = np.nan
     
-    # Moving data 
+    # Забираем нужные данные из колонки общих данных 'General' во вновь созданые колонки 'Brands', 'Locations', 'Units'
     def copy_col(pattern, col):
         for idx, val in df['General'].items():
             if re.findall(pattern, str(val)):
@@ -67,6 +67,7 @@ def main(src3_get):
     # во вспомогательном модуле DC_settings.py
     df = arrange_cols(df, ['Brands', 'Locations', 'Units', 'Plates',  'Drivers', 'Ratings'])
     
+    # Возвращаем датафрейм в _main.py
     return df
 
 if __name__ == '__main__':

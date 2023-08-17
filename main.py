@@ -1,7 +1,7 @@
 import os
 import sys
 
-# Global imports
+# Глобальные переменные
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 sys.path.append(parent_dir)
 
@@ -12,6 +12,7 @@ from GUI._main import main as gui
 
 
 def main():
+    processor()
     pprint('main.py')
     pprint('Running the PROCESSOR Module')
     pprint(processor())

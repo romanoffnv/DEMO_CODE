@@ -3,10 +3,6 @@ from DC_settings import *
 
 from PROCESSOR.plates_parser import main as plates_parser
 
-# Функция перераспределения колонок в нужном порядке
-# def arrange_cols(df, cols):
-#     return df[cols]
-
 # Функция по очистке датафрейма
 def clean_df_headers(df, col_keyword_pairs):
     for keyword, colnames in col_keyword_pairs.items():
@@ -133,6 +129,7 @@ def main(src2_get):
     df = arrange_cols(df, ['Date', 'Brands', 'Locations','Units', 
                            'Plates', 'Tasks', 'Urgency', 'Mileage'])
     
+    # Возвращаем датафрейм в _main.py
     return df
    
     

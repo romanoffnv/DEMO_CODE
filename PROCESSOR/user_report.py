@@ -2,15 +2,16 @@ from __init__ import *
 from DC_settings import *
 
 def main(uniplates_generalizer):
-    # Распаковываем датафреймы
+    # Распаковываем воходящие датафреймы
     df1 = uniplates_generalizer[0]
     df2 = uniplates_generalizer[1]
     df3 = uniplates_generalizer[2]
     
-    # Определяем листы для конечного датафрейма
+    # Определяем листы для составления конечного датафрейма
+    # Пустые для заполенения в ходе сопоставления
     Date, Brands, Tasks, Urgency, Mileage = [], [], [], [], []
     Locations, Units, Drivers, Ratings = [], [], [], []
-    
+    # Прямые, взятые из датафрейма сопоставителя
     Plates = df1['Plates'].tolist()
     Status = df1['Status'].tolist()
     Coordinates = df1['Coordinates'].tolist()
@@ -34,6 +35,7 @@ def main(uniplates_generalizer):
     # Складываем листы в финальный датафрейм 
     df = pd.DataFrame(zip(Date, Brands, Locations, Units, Plates, Status, Coordinates, Tasks, Urgency, Mileage, Drivers, Ratings), 
                       columns = ['Date', 'Brands', 'Locations', 'Units', 'Plates', 'Status', 'Coords', 'Tasks', 'Urgency', 'Mileage', 'Drivers', 'Ratings'])
+    # Возвращаем финальный датафрейм в _main.py
     return df
 if __name__ == '__main__':
     main()

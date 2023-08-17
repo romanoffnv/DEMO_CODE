@@ -13,6 +13,7 @@ def main():
                 return dict_json
             else:
                 pprint(f"Error: The link returned a status code of {response.status_code}.")
+                return 0
         except requests.exceptions.RequestException as e:
             pprint(f"Error: Unable to access the link. {e}")
     
