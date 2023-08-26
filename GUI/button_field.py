@@ -12,34 +12,41 @@ class ButtonField:
         self.parent = parent
         self.screen_field = ScreenField  # Store the screen_field instance
         self.warning_field = WarningField  # Store the screen_field instance
+        
 
     def apply_button_style(self, widget, style):
         for option, value in style.items():
             widget[option] = value
 
-    def create_buttons(self):
+    def create_buttons(self, button_frame):
         btns = ['Данные', 'Отчет', 'Карта', 'Статус', 'Важность', 'Рейтинги']
 
         # Determine the widest button width
         widest_width = max(len(btn) for btn in btns)
-
-        # Create a container frame for the buttons
-        # #1E1E1E
-        button_frame = tk.Frame(self.parent, bg='blue')
-        button_frame.pack(side="top", pady=10)
-
-        # Loop thru the buttons
+        
+        # Loop through the buttons
         for i, btn in enumerate(btns):
             # Apply the widest width to all buttons
             button = tk.Button(button_frame, text=btn, width=widest_width)
+            
             # Apply the styles
             self.apply_button_style(button, self.get_button_styles())
             # Apply the positioning to the buttons
-            button.grid(row=0, column=i, padx=5)  
+            button.grid(row=0, column=i, pady=20)
             
             # Apply functionality to the buttons
             if i == 0:
-                button.config(command=self.on_data_button_click)
+                button.config(command=self.on_data_click)
+            elif i == 1:
+                button.config(command=self.on_rep_click)
+            elif i == 2:
+                button.config(command=self.on_map_click)
+            elif i == 3:
+                button.config(command=self.on_status_click)
+            elif i == 4:
+                button.config(command=self.on_priority_click)
+            elif i == 5:
+                button.config(command=self.on_rating_click)
         
         # Configure grid row/column weights for responsiveness
         self.parent.grid_rowconfigure(0, weight=1)
@@ -57,24 +64,30 @@ class ButtonField:
             "relief": "ridge"
         }
         return button_styles
-
-
         
-    def on_data_button_click(self):
+    def on_data_click(self):
         process()
-        # self.screen_field.display_message('message')
-        self.warning_field.display_message('База данных обновлена')
+        self.screen_field.display_message('', fade = False)
+        self.warning_field.display_message('База данных обновлена', fade = True)
         
+    def on_rep_click(self):
+        self.screen_field.display_message('Report', fade = False)
+        self.warning_field.display_message('Report Anomalies', fade = False)
         
+    def on_map_click(self):
+        self.screen_field.display_message('Map', fade = False)
+        self.warning_field.display_message('', fade = False)
+    
+    def on_status_click(self):
+        self.screen_field.display_message('Status', fade = False)
+        self.warning_field.display_message('', fade = False)
+    
+    def on_priority_click(self):
+        self.screen_field.display_message('Priority', fade = False)
+        self.warning_field.display_message('', fade = False)
         
-
+    def on_rating_click(self):
+        self.screen_field.display_message('Ratings', fade = False)
+        self.warning_field.display_message('', fade = False)
         
-def main():
-    root = tk.Tk()
-    app = ButtonField(root)
-    app.create_buttons()  # Call the create_buttons method
-    root.mainloop()
-
-if __name__ == '__main__':
-    main()
 
