@@ -2,14 +2,16 @@ from __init__ import *
 from DC_settings import *
 
 from PROCESSOR._main import main as process
-
+from GUI.screen_field import ScreenField
+from GUI.warning_field import WarningField
 
 
 
 class ButtonField:
-    def __init__(self, parent):
+    def __init__(self, parent, ScreenField, WarningField):
         self.parent = parent
-        # self.screen_field = screen_field
+        self.screen_field = ScreenField  # Store the screen_field instance
+        self.warning_field = WarningField  # Store the screen_field instance
 
     def apply_button_style(self, widget, style):
         for option, value in style.items():
@@ -22,7 +24,8 @@ class ButtonField:
         widest_width = max(len(btn) for btn in btns)
 
         # Create a container frame for the buttons
-        button_frame = tk.Frame(self.parent, bg='#1E1E1E')
+        # #1E1E1E
+        button_frame = tk.Frame(self.parent, bg='blue')
         button_frame.pack(side="top", pady=10)
 
         # Loop thru the buttons
@@ -59,7 +62,11 @@ class ButtonField:
         
     def on_data_button_click(self):
         process()
-        self.screen_field.display_message("This is a message to display on the screen.")
+        # self.screen_field.display_message('message')
+        self.warning_field.display_message('База данных обновлена')
+        
+        
+        
 
         
 def main():
