@@ -8,9 +8,9 @@ sys.path.append(parent_dir)
 from __init__ import *
 from DC_settings import *
 
-from button_field import ButtonField
-from screen_field import ScreenField
-from warning_field import WarningField
+from GUI.button_field import ButtonField
+from GUI.screen_field import ScreenField
+from GUI.warning_field import WarningField
 
 class MainApplication:
     def __init__(self, root):

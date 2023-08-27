@@ -6,4 +6,5 @@ import json
 import re
 import numpy as np
 import tkinter as tk
+from tkinter import ttk
 from PIL import ImageTk

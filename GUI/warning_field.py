@@ -8,6 +8,11 @@ class WarningField(ScreenField):
         super().__init__(parent, warning_frame)
         self.screen_frame = warning_frame
         self.bg = 'darkblue'
+        self.screen_styles = {
+            'bg': self.bg,
+            "fg": "white",
+            "font": ("Helvetica", 12), 
+        }
         
 
 

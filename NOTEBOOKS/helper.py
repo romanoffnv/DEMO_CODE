@@ -1,14 +1,9 @@
-flag = True
-def main_func(callback_function):
-    trigger = callback_function()
-    print(trigger)
+import random
+L = [random.randint(1, 20) for x in range(10)]
+var = 0
 
-def callback_func():
-    return 'button 1'
-def callback_func_1():
-    return 'button 2'
-
-if flag:
-    main_func = main_func(callback_func) 
-else:
-    main_func = main_func(callback_func_1) 
+for i in range(1, len(L)):
+    var = i
+    for j in L[0:var]:
+        print(j)
+    # print(L[i] < L[i - 1])

@@ -42,6 +42,8 @@ def main():
     uniplates_generalizer = uniplates(src1_parse, src2_parse, src3_validator)
     # Отправляем датафреймы с приведенными данными в модуль user_report для создания сводного отчета
     userrep = user_report(uniplates_generalizer)
+    # Приводим типы данных к строке
+    userrep = userrep.astype(str)
     
     # Коннектимся к SQLlite 
     db_name = 'data.db'
@@ -50,7 +52,7 @@ def main():
     
     
     # Выгружаем данные в БД
-    src_post_db = dbpost(cursor, cnx, table_name, userrep, close = False)
+    src_post_db = dbpost(cursor, cnx, table_name, userrep, close = True)
     
     
         

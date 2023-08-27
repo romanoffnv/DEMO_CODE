@@ -2,8 +2,10 @@ from __init__ import *
 from DC_settings import *
 
 from PROCESSOR._main import main as process
+from DB_MNGR.sql_userrep import main as sql_userrep
 from GUI.screen_field import ScreenField
 from GUI.warning_field import WarningField
+
 
 
 
@@ -71,7 +73,8 @@ class ButtonField:
         self.warning_field.display_message('База данных обновлена', fade = True)
         
     def on_rep_click(self):
-        self.screen_field.display_message('Report', fade = False)
+        userrep = sql_userrep()
+        self.screen_field.display_message(userrep, fade = False)
         self.warning_field.display_message('Report Anomalies', fade = False)
         
     def on_map_click(self):
