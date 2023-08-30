@@ -78,8 +78,9 @@ class ButtonField:
         self.warning_field.display_message('Report Anomalies', type='text', fade = False)
         
     def on_map_click(self):
-        self.screen_field.display_message('Map', fade = False)
-        self.warning_field.display_message('', fade = False)
+        userrep = sql_requests()
+        self.screen_field.display_message(userrep[0], type='map', fade = False)
+        self.warning_field.display_message('', type='text', fade = False)
     
     def on_status_click(self):
         status_chart = sql_requests()
