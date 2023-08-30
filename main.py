@@ -14,12 +14,7 @@ from GUI._main import main as gui
 
 def main():
     gui()
-    # processor()
-    # pprint('main.py')
-    # pprint('Running the PROCESSOR Module')
-    # pprint(processor())
-    # pprint('Running the GUI Module')
-    # pprint(gui())
+    
     
     
 if __name__ == '__main__':

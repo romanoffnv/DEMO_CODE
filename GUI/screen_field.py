@@ -5,7 +5,7 @@ from PROCESSOR._main import main as process
 from __init__ import *
 from DC_settings import *
 
-from PROCESSOR._main import main as process
+
 
 class ScreenField:
     def __init__(self, parent, screen_frame):
@@ -14,7 +14,7 @@ class ScreenField:
         self.bg = 'darkgreen'
         self.screen_styles = {
             'bg': self.bg,
-            "fg": "white",
+            "fg": "black",
             "font": ("Helvetica", 12), 
         }
         
@@ -32,7 +32,7 @@ class ScreenField:
         label.pack(padx=20, pady=20, fill="both", expand=True)  
 
     def display_message(self, message, type, fade):
-        pprint(type)
+        
         # Clear any previous content from the screen_frame
         if self.screen_frame is not None:
             # Clear any previous content from the screen_frame
@@ -65,10 +65,15 @@ class ScreenField:
             self.apply_screen_style(label, self.screen_styles)
             label.pack(padx=20, pady=20)
         
-        if type == 'chart_pie':
+        if type == 'status_chart':
+            status_chart = message.iloc[:, 0]
+            on_count = (status_chart == 'online').sum()
+            off_count = (status_chart == 'offline').sum()
+            pprint(f'works great {status_chart}')
+            pprint(f'works + {on_count}')
             # Example data
             labels = ['online', 'offline']
-            sizes = [message[0], message[1]]  # Percentages for each category
+            sizes = [on_count, off_count]  # Percentages for each category
 
             # Create a figure and axes
             fig, ax = plt.subplots()
@@ -91,10 +96,15 @@ class ScreenField:
             # Close the Matplotlib figure to prevent pop-up window
             plt.close(fig)
         
-        if type == 'chart_donut':
+        if type == 'urgency_chart':
+            urgency_chart = message.iloc[:, 1]
+            lower_count = (urgency_chart == 'низк').sum()
+            mid_count = (urgency_chart == 'сред').sum()
+            hi_count = (urgency_chart == 'выс').sum()
+            
             # Example data
             labels = ['низк', 'сред', 'выс']
-            sizes = [message[0], message[1], message[2]]  # Percentages for each category
+            sizes = [lower_count, mid_count, hi_count]  # Percentages for each category
 
             # Create a figure and axes
             fig, ax = plt.subplots()
@@ -106,7 +116,7 @@ class ScreenField:
             fig.gca().add_artist(centre_circle)
 
             # Add a title
-            ax.set_title('Автомобили в сети')
+            ax.set_title('Распределение приоритетов заданий')
 
             # Create a FigureCanvasTkAgg instance
             canvas = FigureCanvasTkAgg(fig, master=self.screen_frame)
@@ -117,8 +127,36 @@ class ScreenField:
 
             # Display the chart
             canvas.get_tk_widget().update_idletasks()  # Ensure correct rendering
+        
+        if type == 'ratings_chart':
+            rating_chart = message.iloc[:, 2]
+            hi = ((rating_chart.astype(float) < 5.0) & (rating_chart.astype(float) > 4.7)).sum()
+            mid = ((rating_chart.astype(float) < 4.7) & (rating_chart.astype(float) > 4.2)).sum()
+            under_mid = ((rating_chart.astype(float) < 4.2) & (rating_chart.astype(float) > 3.7)).sum()
+            low = ((rating_chart.astype(float) < 3.7) & (rating_chart.astype(float) > 3.3)).sum()
+            trash = ((rating_chart.astype(float) < 3.3) & (rating_chart.astype(float) > 0)).sum()
             
-        # Schedule the destruction of the label after 2000 milliseconds
+            labels = ['Высокий', 'Средний', 'Ниже среднего', 'Низкий', 'Увольнение']
+            sizes = [hi, mid, under_mid, low, trash]
+            
+            fig, ax = plt.subplots()
+            x = np.arange(len(labels))
+            width = 0.3  # Adjust the width as needed for spacing
+            ax.bar(x, sizes, width=width)
+            ax.set_xticks(x)
+            ax.set_xticklabels(labels)
+            ax.set_title('Распределение рейтингов водителей')
+            plt.tight_layout()
+
+            canvas = FigureCanvasTkAgg(fig, master=self.screen_frame)
+            canvas.draw()
+
+            # Pack the canvas widget into the screen_frame
+            canvas.get_tk_widget().pack(fill="both", padx=40, pady=40, expand=True)
+
+            # Display the chart
+            canvas.get_tk_widget().update_idletasks()  # Ensure correct rendering
+
         if fade:
             self.parent.after(5000, label.destroy)
 

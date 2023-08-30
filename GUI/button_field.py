@@ -2,10 +2,7 @@ from __init__ import *
 from DC_settings import *
 
 from PROCESSOR._main import main as process
-from DB_MNGR.sql_userrep import main as sql_userrep
-from DB_MNGR.sql_status import main as sql_status
-from DB_MNGR.sql_urgency import main as sql_urgency
-
+from PROCESSOR.sql_requests import main as sql_requests
 from GUI.screen_field import ScreenField
 from GUI.warning_field import WarningField
 
@@ -76,26 +73,27 @@ class ButtonField:
         self.warning_field.display_message('База данных обновлена', type='text', fade = True)
         
     def on_rep_click(self):
-        userrep = sql_userrep()
-        self.screen_field.display_message(userrep, type = 'df', fade = False)
-        self.warning_field.display_message('Report Anomalies', fade = False)
+        userrep = sql_requests()
+        self.screen_field.display_message(userrep[0], type='df', fade = False)
+        self.warning_field.display_message('Report Anomalies', type='text', fade = False)
         
     def on_map_click(self):
         self.screen_field.display_message('Map', fade = False)
         self.warning_field.display_message('', fade = False)
     
     def on_status_click(self):
-        online_chart = sql_status()
-        self.screen_field.display_message(online_chart, type = 'chart_pie', fade = False)
-        self.warning_field.display_message('', fade = False)
+        status_chart = sql_requests()
+        self.screen_field.display_message(status_chart[1], type = 'status_chart', fade = False)
+        self.warning_field.display_message('', type='text', fade = False)
     
     def on_priority_click(self):
-        urgency_chart = sql_urgency()
-        self.screen_field.display_message(urgency_chart, type = 'chart_donut', fade = False)
-        self.warning_field.display_message('', fade = False)
+        urgency_chart = sql_requests()
+        self.screen_field.display_message(urgency_chart[1], type = 'urgency_chart', fade = False)
+        self.warning_field.display_message('', type='text', fade = False)
         
     def on_rating_click(self):
-        self.screen_field.display_message('Ratings', fade = False)
-        self.warning_field.display_message('', fade = False)
+        ratings_chart = sql_requests()
+        self.screen_field.display_message(ratings_chart[1], 'ratings_chart', fade = False)
+        self.warning_field.display_message('', type='text', fade = False)
         
 
