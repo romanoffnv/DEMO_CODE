@@ -31,6 +31,35 @@ class ScreenField:
         self.apply_screen_style(label, self.screen_styles)  # Use self.screen_styles directly
         label.pack(padx=20, pady=20, fill="both", expand=True)  
 
+    def make_charts(self, sizes, labels, title, type_c):
+        fig, ax = plt.subplots()
+    
+        if type_c == 'pie':
+            wedges, texts, autotexts = ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=240)
+        elif type_c == 'donut':
+            wedges, texts, autotexts = ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=240, pctdistance=0.85)
+            centre_circle = plt.Circle((0, 0), 0.70, fc='white')
+            ax.add_artist(centre_circle)
+        elif type_c == 'bar':
+            fig, ax = plt.subplots()
+            x = np.arange(len(labels))
+            width = 0.3  # Adjust the width as needed for spacing
+            ax.bar(x, sizes, width=width)
+            ax.set_xticks(x)
+            ax.set_xticklabels(labels)
+
+        # Apply common settings
+        ax.set_title(title)
+        plt.tight_layout()
+        canvas = FigureCanvasTkAgg(fig, master=self.screen_frame)
+        canvas.draw()
+
+        # Pack the canvas widget into the screen_frame
+        canvas.get_tk_widget().pack(fill="both", padx=40, pady=40, expand=True)
+
+        # Display the chart
+        canvas.get_tk_widget().update_idletasks()  # Ensure correct rendering
+
     def display_message(self, message, type, fade):
         
         # Clear any previous content from the screen_frame
@@ -41,24 +70,22 @@ class ScreenField:
       
         # if isinstance(message, pd.DataFrame):
         if type == 'df':
-            try:
-                tree = ttk.Treeview(self.screen_frame)
-                tree.pack(padx=20, pady=20, fill="both", expand=True)
-                style = ttk.Style()
-                style.configure("Treeview.Heading", font=(None, 20))
-                style.configure("Treeview.Heading", background=self.bg)
-                style.configure("Treeview", background=self.bg, font=(None, 12))
+            tree = ttk.Treeview(self.screen_frame)
+            tree.pack(padx=20, pady=20, fill="both", expand=True)
+            style = ttk.Style()
+            style.configure("Treeview.Heading", font=(None, 20))
+            style.configure("Treeview.Heading", background=self.bg)
+            style.configure("Treeview", background=self.bg, font=(None, 12))
 
-                columns = list(message.columns)
-                tree["columns"] = columns
-                for col in columns:
-                    tree.heading(col, text=col, anchor="w")
-                    tree.column(col, anchor="w", width=100)
+            columns = list(message.columns)
+            tree["columns"] = columns
+            for col in columns:
+                tree.heading(col, text=col, anchor="w")
+                tree.column(col, anchor="w", width=100)
 
-                for index, row in message.iterrows():
-                    tree.insert("", "end", values=list(row))
-            except Exception as e:
-                print("Error:", e)
+            for index, row in message.iterrows():
+                tree.insert("", "end", values=list(row))
+            
 
         if type == 'text':
             label = tk.Label(self.screen_frame, text=message, highlightthickness=0)
@@ -69,32 +96,12 @@ class ScreenField:
             status_chart = message.iloc[:, 0]
             on_count = (status_chart == 'online').sum()
             off_count = (status_chart == 'offline').sum()
-            pprint(f'works great {status_chart}')
-            pprint(f'works + {on_count}')
+            
             # Example data
             labels = ['online', 'offline']
             sizes = [on_count, off_count]  # Percentages for each category
-
-            # Create a figure and axes
-            fig, ax = plt.subplots()
-
-            # Create a pie chart on the axes
-            ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=240)
-            ax.axis('equal')
-            ax.set_title('Автомобили в сети')
-
-            # Create a FigureCanvasTkAgg instance
-            canvas = FigureCanvasTkAgg(fig, master=self.screen_frame)
-            canvas.draw()
-
-            # Pack the canvas widget into the screen_frame
-            canvas.get_tk_widget().pack(fill="both", expand=True)
-
-            # Display the chart
-            canvas.get_tk_widget().update_idletasks()  # Ensure correct rendering
-
-            # Close the Matplotlib figure to prevent pop-up window
-            plt.close(fig)
+            title = 'Автомобили в сети'
+            self.make_charts(sizes, labels, title, 'pie')
         
         if type == 'urgency_chart':
             urgency_chart = message.iloc[:, 1]
@@ -104,29 +111,9 @@ class ScreenField:
             
             # Example data
             labels = ['низк', 'сред', 'выс']
-            sizes = [lower_count, mid_count, hi_count]  # Percentages for each category
-
-            # Create a figure and axes
-            fig, ax = plt.subplots()
-            wedges, texts, autotexts = ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=240, pctdistance=0.85)
-            ax.axis('equal')
-
-            # Add a white circle to create the donut effect
-            centre_circle = plt.Circle((0,0),0.70,fc='white')
-            fig.gca().add_artist(centre_circle)
-
-            # Add a title
-            ax.set_title('Распределение приоритетов заданий')
-
-            # Create a FigureCanvasTkAgg instance
-            canvas = FigureCanvasTkAgg(fig, master=self.screen_frame)
-            canvas.draw()
-
-            # Pack the canvas widget into the screen_frame
-            canvas.get_tk_widget().pack(fill="both", expand=True)
-
-            # Display the chart
-            canvas.get_tk_widget().update_idletasks()  # Ensure correct rendering
+            sizes = [lower_count, mid_count, hi_count]  
+            title = 'Распределение приоритетов заданий'
+            self.make_charts(sizes, labels, title, 'donut')
         
         if type == 'ratings_chart':
             rating_chart = message.iloc[:, 2]
@@ -138,24 +125,8 @@ class ScreenField:
             
             labels = ['Высокий', 'Средний', 'Ниже среднего', 'Низкий', 'Увольнение']
             sizes = [hi, mid, under_mid, low, trash]
-            
-            fig, ax = plt.subplots()
-            x = np.arange(len(labels))
-            width = 0.3  # Adjust the width as needed for spacing
-            ax.bar(x, sizes, width=width)
-            ax.set_xticks(x)
-            ax.set_xticklabels(labels)
-            ax.set_title('Распределение рейтингов водителей')
-            plt.tight_layout()
-
-            canvas = FigureCanvasTkAgg(fig, master=self.screen_frame)
-            canvas.draw()
-
-            # Pack the canvas widget into the screen_frame
-            canvas.get_tk_widget().pack(fill="both", padx=40, pady=40, expand=True)
-
-            # Display the chart
-            canvas.get_tk_widget().update_idletasks()  # Ensure correct rendering
+            title = 'Распределение рейтингов водителей'
+            self.make_charts(sizes, labels, title, 'bar')
 
         if fade:
             self.parent.after(5000, label.destroy)
