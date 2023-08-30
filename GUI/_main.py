@@ -24,7 +24,6 @@ class MainApplication:
         self.screen_height = self.root.winfo_screenheight()
         self.height = 50
         self.layout()
-        # self.controller()
     
     def layout(self):
         button_frame = tk.Frame(self.root, width = self.screen_width, height = self.height, bg='darkred')

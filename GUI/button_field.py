@@ -3,6 +3,9 @@ from DC_settings import *
 
 from PROCESSOR._main import main as process
 from DB_MNGR.sql_userrep import main as sql_userrep
+from DB_MNGR.sql_status import main as sql_status
+from DB_MNGR.sql_urgency import main as sql_urgency
+
 from GUI.screen_field import ScreenField
 from GUI.warning_field import WarningField
 
@@ -69,12 +72,12 @@ class ButtonField:
         
     def on_data_click(self):
         process()
-        self.screen_field.display_message('', fade = False)
-        self.warning_field.display_message('База данных обновлена', fade = True)
+        self.screen_field.display_message('', type='text', fade = False)
+        self.warning_field.display_message('База данных обновлена', type='text', fade = True)
         
     def on_rep_click(self):
         userrep = sql_userrep()
-        self.screen_field.display_message(userrep, fade = False)
+        self.screen_field.display_message(userrep, type = 'df', fade = False)
         self.warning_field.display_message('Report Anomalies', fade = False)
         
     def on_map_click(self):
@@ -82,11 +85,13 @@ class ButtonField:
         self.warning_field.display_message('', fade = False)
     
     def on_status_click(self):
-        self.screen_field.display_message('Status', fade = False)
+        online_chart = sql_status()
+        self.screen_field.display_message(online_chart, type = 'chart_pie', fade = False)
         self.warning_field.display_message('', fade = False)
     
     def on_priority_click(self):
-        self.screen_field.display_message('Priority', fade = False)
+        urgency_chart = sql_urgency()
+        self.screen_field.display_message(urgency_chart, type = 'chart_donut', fade = False)
         self.warning_field.display_message('', fade = False)
         
     def on_rating_click(self):
