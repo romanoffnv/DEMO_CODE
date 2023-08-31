@@ -42,7 +42,7 @@ def main():
     uniplates_generalizer = uniplates(src1_parse, src2_parse, src3_validator)
     # Отправляем датафреймы с приведенными данными в модуль user_report для создания сводного отчета
     userrep = user_report(uniplates_generalizer)
-    # Приводим типы данных к строке
+    # Приводим данные в датафрейме к типу 'строка', во избежание конфликтов типов данных
     userrep = userrep.astype(str)
     
     # Коннектимся к SQLlite 
