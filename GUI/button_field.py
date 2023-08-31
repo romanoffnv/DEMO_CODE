@@ -33,7 +33,7 @@ class ButtonField:
             # Применяем стили к кнопкам
             self.apply_button_style(button, self.get_button_styles())
             # Применяем параметры позиционирования к кнопкам
-            button.grid(row = 0, column = i, pady = (30, 0))
+            button.grid(row = 0, column = i, pady = 20)
             
             # Применяем функционал к кнопкам
             if i ==  0:
