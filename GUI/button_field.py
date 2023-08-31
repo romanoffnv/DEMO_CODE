@@ -78,23 +78,22 @@ class ButtonField:
         self.warning_field.display_message('Report Anomalies', type='text', fade = False)
         
     def on_map_click(self):
-        userrep = sql_requests()
-        self.screen_field.display_message(userrep[0], type='map', fade = False)
+        map = sql_requests()
+        self.screen_field.display_message(map[1], type='map', fade = False)
         self.warning_field.display_message('', type='text', fade = False)
     
     def on_status_click(self):
         status_chart = sql_requests()
-        self.screen_field.display_message(status_chart[1], type = 'status_chart', fade = False)
+        self.screen_field.display_message(status_chart[2], type = 'status_chart', fade = False)
         self.warning_field.display_message('', type='text', fade = False)
     
     def on_priority_click(self):
         urgency_chart = sql_requests()
-        self.screen_field.display_message(urgency_chart[1], type = 'urgency_chart', fade = False)
+        self.screen_field.display_message(urgency_chart[2], type = 'urgency_chart', fade = False)
         self.warning_field.display_message('', type='text', fade = False)
         
     def on_rating_click(self):
         ratings_chart = sql_requests()
-        self.screen_field.display_message(ratings_chart[1], 'ratings_chart', fade = False)
+        self.screen_field.display_message(ratings_chart[2], 'ratings_chart', fade = False)
         self.warning_field.display_message('', type='text', fade = False)
         
-

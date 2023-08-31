@@ -128,7 +128,13 @@ class ScreenField:
             title = 'Распределение рейтингов водителей'
             self.make_charts(sizes, labels, title, 'bar')
         if type == 'map':
-            coordinates = [37.7749, -122.4194]
+            pprint(message)
+            # car_1 = message.iloc[0:0, 'Units']
+            # plate_1 = message.loc[0:0, 'Plates']
+            # item = car_1 + plate_1
+            # coordinates = message.loc[0:0, 'Coords']
+            # pprint(coordinates)
+            # coordinates = [37.7749, -122.4194]
 
             map_widget = tkintermapview.TkinterMapView(self.screen_frame, corner_radius=0)
             map_widget.grid(row=0, column=0, sticky="nsew", padx=40, pady=40)  # Fill the available space
@@ -136,11 +142,11 @@ class ScreenField:
             self.screen_frame.grid_rowconfigure(0, weight=1)  # Allow row 0 to expand
             self.screen_frame.grid_columnconfigure(0, weight=1)  # Allow column 0 to expand
 
-            marker = map_widget.set_marker(coordinates, text="Your Marker Text")
-            marker.set_position(*coordinates)
-
-            map_widget.set_position(*coordinates)  # Set the map's position
-            map_widget.set_zoom(15)  # Set the initial zoom level
+            
+            map_widget.set_position(55.752673, 37.622668)
+            map_widget.set_zoom(13)
+            marker_2 = map_widget.set_marker(55.76719, 37.578573, text='car_1')
+            marker_2.set_position(...) 
 
         if fade:
             self.parent.after(5000, label.destroy)

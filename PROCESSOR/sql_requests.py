@@ -30,13 +30,14 @@ def main():
                 columns.append(cursor.fetchall())
             return pd.DataFrame(zip(*columns), columns=col_names)
         df_userrep=sql_request(['Date', 'Brands', 'Locations', 'Units', 'Plates', 'Status', 'Tasks', 'Urgency'])
+        df_map=sql_request(['Units', 'Plates', 'Coords'])
         df_charts=sql_request(['Status', 'Urgency', 'Ratings'])
     except sqlite3.Error as e:
         print('Update the data base')
         
    
     
-    return df_userrep, df_charts
+    return df_userrep, df_map, df_charts
 
         
   
