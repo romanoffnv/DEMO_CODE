@@ -3,6 +3,7 @@ from DC_settings import *
 
 from PROCESSOR._main import main as process
 from PROCESSOR.sql_requests import main as sql_requests
+from PROCESSOR.src1_api_get import main as api
 from GUI.screen_field import ScreenField
 
 
@@ -55,7 +56,7 @@ class ButtonField:
 
     def get_button_styles(self):
         button_styles = {
-            'bg': '#19C37D',
+            'bg': '#0078d7',
             'fg': 'white',
             'font': ('Helvetica', 12),
             'highlightbackground': '#1E1E1E',
@@ -67,7 +68,11 @@ class ButtonField:
     # Фукнции кнопок on_click   
     def on_data_click(self):
         process()
-        self.screen_field.display_message('База данных обновлена', data_type = 'text')
+        connection = api()
+        if connection is not 0:
+            self.screen_field.display_message('База данных обновлена', data_type = 'text')
+        else:
+            self.screen_field.display_message('База данных не обновлена. Проверьте подключение к интернету', data_type = 'text')
         
     def on_rep_click(self):
         userrep = sql_requests()
@@ -88,5 +93,5 @@ class ButtonField:
     def on_rating_click(self):
         ratings_chart = sql_requests()
         self.screen_field.display_message(ratings_chart[2], 'ratings_chart')
-        self.warning_field.display_message('График рейтингов водителей', data_type = 'text')
+        
         

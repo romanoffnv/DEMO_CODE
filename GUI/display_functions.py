@@ -5,11 +5,10 @@ from DC_settings import *
 
 
 def display_df(screen_frame, message, pad_x, pad_y):
-    tree = ttk.Treeview(screen_frame)
+    tree = ttk.Treeview(screen_frame, show = 'headings')
     tree.pack(padx = pad_x, pady = pad_y, fill = 'both', expand = True)
     style = ttk.Style()
     style.configure('Treeview.Heading', font = (None, 20))
-    style.configure('Treeview.Heading')
     style.configure('Treeview', font = (None, 12))
 
     columns = list(message.columns)
@@ -22,8 +21,8 @@ def display_df(screen_frame, message, pad_x, pad_y):
 
 def display_text(screen_frame, message, parent, pad_x, pad_y):
     screen_styles = {
-            'bg': '#F7F7F8',
-            'fg': 'black',
+            'bg': '#666',
+            'fg': 'white',
             'font': ('Helvetica', 12), 
         }
     label = tk.Label(screen_frame, text = message, highlightthickness = 0)

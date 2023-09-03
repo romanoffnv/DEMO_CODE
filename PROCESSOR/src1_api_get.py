@@ -16,6 +16,7 @@ def main():
                 return 0
         except requests.exceptions.RequestException as e:
             pprint(f"Error: Unable to access the link. {e}")
+            return 0
     
     dict_json = get_json_github(url)
     return dict_json
