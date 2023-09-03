@@ -19,6 +19,7 @@ def main():
             return 0
     
     dict_json = get_json_github(url)
+    pprint(dict_json)
     return dict_json
 
 if __name__ == '__main__':
