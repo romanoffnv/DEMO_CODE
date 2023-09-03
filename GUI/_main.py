@@ -9,7 +9,7 @@ from DC_settings import *
 
 from GUI.button_field import ButtonField
 from GUI.screen_field import ScreenField
-from GUI.warning_field import WarningField
+
 
 class MainApplication:
     '''Класс определяет параметры окна и верстку элементов GUI'''
@@ -19,32 +19,34 @@ class MainApplication:
         self.root.state('zoomed')
         self.screen_width = self.root.winfo_screenwidth()
         self.screen_height = self.root.winfo_screenheight()
+        self.bg_button = '#202123'
+        self.bg_main = '#F7F7F8'
         self.layout()
+        
     
     def layout(self):
         # Определяем фреймы элементов GUI
-        button_frame = tk.Frame(self.root, width = self.screen_width, height = self.screen_height * 0.1, bg = '#202123')
+        button_frame = tk.Frame(self.root, width = self.screen_width, height = self.screen_height * 0.1, bg = self.bg_button)
         button_frame.grid(row = 0, column = 0, sticky = 'nsew')
-        screen_frame = tk.Frame(self.root, width = self.screen_width, height = self.screen_height * 0.7, bg = '#F7F7F8')  
+        screen_frame = tk.Frame(self.root, width = self.screen_width, height = self.screen_height * 0.9, bg = self.bg_main)  
         screen_frame.grid(row = 1, column = 0, sticky = 'nsew')
-        warning_frame = tk.Frame(self.root, width = self.screen_width, height = self.screen_height * 0.2, bg = '#96A4A4') 
-        warning_frame.grid(row = 2, column = 0, sticky = 'nsew')
+        
         
          # Определяем веса для каждого ряда в grid, влияющих на размер фрейма по высоте
-        self.root.grid_rowconfigure(0, weight = 1)  # button_frame
-        self.root.grid_rowconfigure(1, weight = 1)  # screen_frame
-        self.root.grid_rowconfigure(2, weight = 1)  # warning_frame
+        self.root.grid_rowconfigure(0, weight = 5)  # button_frame
+        self.root.grid_rowconfigure(1, weight = 0)  # screen_frame
+        
         
         # Определяем вес для колонки в grid 
         self.root.grid_columnconfigure(0, weight = 1)
         
         # Инициируем и запускаем классы
-        screen_field = ScreenField(self.root, screen_frame)
-        warning_field = WarningField(self.root, screen_frame, warning_frame)
-        button_field = ButtonField(self.root, screen_field, warning_field)  
+        screen_field = ScreenField(self.root, screen_frame, self.bg_main)
+        # warning_field = WarningField(self.root, screen_frame, warning_frame)
+        button_field = ButtonField(self.root, screen_field)  
         button_field.create_buttons(button_frame)
         screen_field.create_screen()
-        warning_field.create_screen()
+        
         
   
        
