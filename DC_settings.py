@@ -34,9 +34,6 @@ def set_pandas_options(df, width, colwidth, colmap):
         df.columns = df.columns.map(str)
         df.rename(columns=lambda x: x[:10] if len(x) > 20 else x, inplace=True)
 
-# print_val = df_trans
-# pprint(print_val, set_pandas_options(print_val, width=1000, colwidth=100, colmap = False))
-
 # Функция перераспределения колонок в нужном порядке
 def arrange_cols(df, cols):
     return df[cols]
