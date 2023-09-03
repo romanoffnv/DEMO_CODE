@@ -12,9 +12,9 @@
     <img src="https://github.com/romanoffnv/DC_JSON/blob/main/GUI_2.png?raw=true" alt="Скрин GUI_2" width="30%">
   </div>
 
-</div>
 
-<div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+
+
 
   <div style="flex: 0 0 calc(30% - 10px); margin-right: 10px;">
     <img src="https://github.com/romanoffnv/DC_JSON/blob/main/GUI_3.png?raw=true" alt="Скрин GUI_3" width="30%">
@@ -24,9 +24,9 @@
     <img src="https://github.com/romanoffnv/DC_JSON/blob/main/GUI_4.png?raw=true" alt="Скрин GUI_4" width="30%">
   </div>
 
-</div>
 
-<div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+
+
 
   <div style="flex: 0 0 calc(30% - 10px); margin-right: 10px;">
     <img src="https://github.com/romanoffnv/DC_JSON/blob/main/GUI_5.png?raw=true" alt="Скрин GUI_5" width="30%">
