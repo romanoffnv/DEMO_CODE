@@ -2,13 +2,43 @@
 
 Эта программа разработана в целях презентации и представляет собой информационную панель с графическим интерфейсом. Управление информационной панелью осуществляется пользователем. Программа производит анализ данных, полученных из трех источников, и визуализирует определенные метрики.
 
-<img src="https://github.com/romanoffnv/DC_JSON/blob/main/GUI_1.png?raw=true" alt="Скрин GUI_1" width="400" height="200">
-<img src="https://github.com/romanoffnv/DC_JSON/blob/main/GUI_2.png?raw=true" alt="Скрин GUI_1" width="400" height="200">
-<img src="https://github.com/romanoffnv/DC_JSON/blob/main/GUI_3.png?raw=true" alt="Скрин GUI_1" width="400" height="200">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
 
-<img src="https://github.com/romanoffnv/DC_JSON/blob/main/GUI_4.png?raw=true" alt="Скрин GUI_1" width="400" height="200">
-<img src="https://github.com/romanoffnv/DC_JSON/blob/main/GUI_5.png?raw=true" alt="Скрин GUI_1" width="400" height="200">
-<img src="https://github.com/romanoffnv/DC_JSON/blob/main/GUI_6.png?raw=true" alt="Скрин GUI_1" width="400" height="200">
+  <div style="flex: 0 0 calc(50% - 10px); margin-right: 10px;">
+    <img src="https://github.com/romanoffnv/DC_JSON/blob/main/GUI_1.png?raw=true" alt="Скрин GUI_1" width="100%">
+  </div>
+
+  <div style="flex: 0 0 calc(50% - 10px); margin-right: 10px;">
+    <img src="https://github.com/romanoffnv/DC_JSON/blob/main/GUI_2.png?raw=true" alt="Скрин GUI_2" width="100%">
+  </div>
+
+</div>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+
+  <div style="flex: 0 0 calc(50% - 10px); margin-right: 10px;">
+    <img src="https://github.com/romanoffnv/DC_JSON/blob/main/GUI_3.png?raw=true" alt="Скрин GUI_3" width="100%">
+  </div>
+
+  <div style="flex: 0 0 calc(50% - 10px); margin-right: 10px;">
+    <img src="https://github.com/romanoffnv/DC_JSON/blob/main/GUI_4.png?raw=true" alt="Скрин GUI_4" width="100%">
+  </div>
+
+</div>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+
+  <div style="flex: 0 0 calc(50% - 10px); margin-right: 10px;">
+    <img src="https://github.com/romanoffnv/DC_JSON/blob/main/GUI_5.png?raw=true" alt="Скрин GUI_5" width="100%">
+  </div>
+
+  <div style="flex: 0 0 calc(50% - 10px); margin-right: 10px;">
+    <img src="https://github.com/romanoffnv/DC_JSON/blob/main/GUI_6.png?raw=true" alt="Скрин GUI_6" width="100%">
+  </div>
+
+</div>
+
+
 
 
 ## Архитектура
