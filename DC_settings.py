@@ -4,15 +4,11 @@ import pandas as pd
 
 # Data base functions *********************************************************
 def db_connect(SRC_DIR, db_name):
-        file = os.path.join(SRC_DIR, db_name)
-        cnx = sqlite3.connect(file)
-        cnx.row_factory = lambda cursor, row: row[0]
-        cursor = cnx.cursor()
-        return cursor, cnx 
-
-# def db_get(cnx, db_name, table_name):
-#     df = pd.read_sql_query(f"SELECT Date FROM {table_name}", cnx)
-#     return df
+    file = os.path.join(SRC_DIR, db_name)
+    cnx = sqlite3.connect(file)
+    cnx.row_factory = lambda cursor, row: row[0]
+    cursor = cnx.cursor()
+    return cursor, cnx 
 
 def db_post(cursor, cnx, table_name, src, close):
     cursor.execute(f"DROP TABLE IF EXISTS {table_name}")

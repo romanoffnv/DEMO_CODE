@@ -1,20 +1,20 @@
 import os
 import sys
+import tkinter as tk
+from pprint import pprint
+import time
+
+from GUI.button_field import ButtonField
+from GUI.screen_field import ScreenField
 
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 background_dir = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 sys.path.append(parent_dir)
 
-from __init__ import *
-from DC_settings import *
-
-from GUI.button_field import ButtonField
-from GUI.screen_field import ScreenField
-
 
 class MainApplication:
     '''Класс определяет параметры окна и верстку элементов GUI'''
-    def __init__(self, root, background_image_path=None):
+    def __init__(self, root):
         self.root = root
         self.root.title('DEMO CODE')
         self.root.state('zoomed')
@@ -48,10 +48,12 @@ class MainApplication:
 
 def main():
     root = tk.Tk()
-    app = MainApplication(root)
+    MainApplication(root)
     root.mainloop()
 
+
 if __name__ ==  '__main__':
+
     main()
     start_time = time.time()
-    pprint('--- %s seconds ---' % (time.time() - start_time))
+    pprint(f'--- %s seconds --- %{ (time.time() - start_time)}')

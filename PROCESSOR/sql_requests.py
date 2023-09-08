@@ -1,19 +1,14 @@
 import os
 import sys
+import pandas as pd
+import sqlite3
+import time
+from DC_settings import db_connect as dbcon
 
 # Определяем путь к корневой папке проекта из текущей + 1 уровень вверх
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
-SRC_DIR = parent_dir + '\SRC'
-
-
-# Импортируем общие модули
-from __init__ import *
-from DC_settings import *
-
-
-# Импортируем отдельные функции из общего модуля DC_settings
-from DC_settings import db_connect as dbcon
+SRC_DIR = parent_dir + r'\SRC'
 
 def main():
     
@@ -21,7 +16,8 @@ def main():
     db_name = 'data.db'
     table_name = 'User_rep'
     try:
-        cursor, cnx = dbcon(SRC_DIR, db_name)
+        cursor, _ = dbcon(SRC_DIR, db_name)
+        
         # Функция формирования sql запросов
         def sql_request(col_names):
             columns = []
@@ -32,10 +28,8 @@ def main():
         df_userrep = sql_request(['Date', 'Brands', 'Locations', 'Units', 'Plates', 'Status', 'Tasks', 'Urgency'])
         df_map = sql_request(['Units', 'Plates', 'Coords'])
         df_charts = sql_request(['Status', 'Urgency', 'Ratings'])
-    except sqlite3.Error as e:
+    except sqlite3.Error:
         print('Update the data base')
-        
-   
     
     return df_userrep, df_map, df_charts
 
@@ -44,4 +38,4 @@ def main():
 if __name__ ==  '__main__':
     main()
     start_time = time.time()
-    pprint("--- %s seconds ---" % (time.time() - start_time))
+    print(f'--- %s seconds --- % {(time.time() - start_time)}')

@@ -1,10 +1,13 @@
-from __init__ import *
-from DC_settings import *
+import re
+import time
+import pandas as pd
+import os
+
 
 def main(parent_dir, fname):
     # Октрываем источник с названием, присвоенным переменной fname в df
     # Дополняем ссылку от корневой папки проекта к папке с источниками
-    SRC_DIR = parent_dir + '\SRC'
+    SRC_DIR = parent_dir + r'\SRC'
     
     # Функция переберет все файлы в папке с источниками и вернет открытый источник в виде df 
     # если в его названии будет название, присвоенное переменной fname
@@ -17,11 +20,9 @@ def main(parent_dir, fname):
                 
         return pd.read_excel(fname) 
     return src_xlsx_get(fname)
-    
-
 
 
 if __name__ == '__main__':
     main()
     start_time = time.time()
-    pprint("--- %s seconds ---" % (time.time() - start_time))
+    print(f'--- %s seconds --- % {(time.time() - start_time)}')

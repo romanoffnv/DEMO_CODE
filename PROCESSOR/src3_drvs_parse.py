@@ -1,6 +1,7 @@
-from __init__ import *
-from DC_settings import *
-
+import numpy as np
+import re
+import time
+from DC_settings import fill_nans, arrange_cols
 from PROCESSOR.plates_parser import main as plates_parser
 
 def main(src3_get):
@@ -70,7 +71,8 @@ def main(src3_get):
     # Возвращаем датафрейм в _main.py
     return df
 
+
 if __name__ == '__main__':
     main()
     start_time = time.time()
-    pprint("--- %s seconds ---" % (time.time() - start_time))
+    print(f'--- %s seconds --- % {(time.time() - start_time)}')

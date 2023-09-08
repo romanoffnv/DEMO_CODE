@@ -1,5 +1,5 @@
-from __init__ import *
-from DC_settings import *
+import pandas as pd
+import time
 
 def main(uniplates_generalizer):
     # Распаковываем воходящие датафреймы
@@ -17,7 +17,7 @@ def main(uniplates_generalizer):
     Coordinates = df1['Coordinates'].tolist()
     
     # Сопоставляемся по гос.номерам из 1го датафрейма, приведенным в общий вид, заполняем соответствующие листы
-    for idx, val in df1['Plates'].items():
+    for _, val in df1['Plates'].items():
         for idx_2, val_2 in df2['Plates'].items():
             if val == val_2:
                 Date.append(df2.loc[idx_2, 'Date'])
@@ -37,7 +37,9 @@ def main(uniplates_generalizer):
                       columns = ['Date', 'Brands', 'Locations', 'Units', 'Plates', 'Status', 'Coords', 'Tasks', 'Urgency', 'Mileage', 'Drivers', 'Ratings'])
     # Возвращаем финальный датафрейм в _main.py
     return df
+
+
 if __name__ == '__main__':
     main()
     start_time = time.time()
-    pprint("--- %s seconds ---" % (time.time() - start_time))
+    print(f'--- %s seconds --- % {(time.time() - start_time)}')

@@ -1,13 +1,15 @@
-from __init__ import *
-from DC_settings import *
-
+import re
+import pandas as pd
+import numpy as np
+import time
+from DC_settings import arrange_cols, fill_nans
 from PROCESSOR.plates_parser import main as plates_parser
 
 # Функция по очистке датафрейма
 def clean_df_headers(df, col_keyword_pairs):
     for keyword, colnames in col_keyword_pairs.items():
         for colname in colnames:
-            df[colname][df[colname].apply(lambda val: any(re.findall(keyword, str(val))))] = np.nan
+            df[colname][df[colname].apply(lambda val, keyword=keyword: any(re.findall(keyword, str(val))))] = np.nan
     return df
 
     
@@ -84,7 +86,7 @@ def main(src2_get):
     # Создаем лист для сборки групп после преобразований
     merged_groups = []
     # Проходим по листу с группами
-    for group_name, group_df in grouped_df:
+    for _, group_df in grouped_df:
         # Разбиваем группы на 2 отделения: дневной и ночной смены
         df1 = group_df[['Brands', 'Locations', 'Units', 'Tasks', 'Urgency', 'Mileage']]
         df2 = group_df[['Brands_2', 'Locations_2', 'Units_2', 'Tasks_2', 'Urgency_2', 'Mileage_2']]
@@ -136,5 +138,4 @@ def main(src2_get):
 if __name__ == '__main__':
     main()
     start_time = time.time()
-    pprint("--- %s seconds ---" % (time.time() - start_time))
-
+    print(f'--- %s seconds --- % {(time.time() - start_time)}')

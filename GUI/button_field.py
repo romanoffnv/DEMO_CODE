@@ -1,10 +1,9 @@
-from __init__ import *
-from DC_settings import *
+import tkinter as tk
 
 from PROCESSOR._main import main as process
 from PROCESSOR.sql_requests import main as sql_requests
 from PROCESSOR.src1_api_get import main as api
-from GUI.screen_field import ScreenField
+
 
 
 
@@ -69,7 +68,7 @@ class ButtonField:
     def on_data_click(self):
         process()
         connection = api()
-        if connection is not 0:
+        if connection != 0:
             self.screen_field.display_message('База данных обновлена', data_type = 'text')
         else:
             self.screen_field.display_message('База данных не обновлена. Проверьте подключение к интернету', data_type = 'text')
@@ -79,8 +78,8 @@ class ButtonField:
         self.screen_field.display_message(userrep[0], data_type = 'df')
         
     def on_map_click(self):
-        map = sql_requests()
-        self.screen_field.display_message(map[1], data_type = 'map')
+        geo_map = sql_requests()
+        self.screen_field.display_message(geo_map[1], data_type = 'map')
     
     def on_status_click(self):
         status_chart = sql_requests()

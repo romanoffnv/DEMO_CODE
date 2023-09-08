@@ -1,14 +1,6 @@
 import os
 import sys
-
-# Определяем путь к корневой папке проекта из текущей + 1 уровень вверх
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.append(parent_dir)
-
-# Импортируем общие модули
-from __init__ import *
-from DC_settings import *
-
+import time
 # Импортируем зависимые модули
 from PROCESSOR.src1_api_get import main as src1_api_get
 from PROCESSOR.src1_api_parse import main as src1_api_parse
@@ -22,6 +14,10 @@ from PROCESSOR.user_report import main as user_report
 # Импортируем отдельные функции из общего модуля DC_settings
 from DC_settings import db_connect as dbcon
 from DC_settings import db_post as dbpost
+
+# Определяем путь к корневой папке проекта из текущей + 1 уровень вверх
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(parent_dir)
 
 def main():
     # Извлекаем данные из источника github.com через API в формате JSON
@@ -48,11 +44,11 @@ def main():
     # Коннектимся к SQLlite 
     db_name = 'data.db'
     table_name = 'User_rep'
-    cursor, cnx = dbcon(parent_dir + '\SRC', db_name)
+    cursor, cnx = dbcon(parent_dir + r'\SRC', db_name)
     
     
     # Выгружаем данные в БД
-    src_post_db = dbpost(cursor, cnx, table_name, userrep, close = True)
+    dbpost(cursor, cnx, table_name, userrep, close = True)
     
     
         
@@ -60,4 +56,4 @@ def main():
 if __name__ == '__main__':
     main()
     start_time = time.time()
-    pprint("--- %s seconds ---" % (time.time() - start_time))
+    print(f'--- %s seconds --- % {(time.time() - start_time)}')

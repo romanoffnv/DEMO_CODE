@@ -1,11 +1,14 @@
-from PROCESSOR._main import main as process
-from GUI.display_functions import *
-from __init__ import *
-from DC_settings import *
-
 import os
-import sys
-
+from GUI.display_functions import (
+    display_df,
+    display_text,
+    display_status_chart,
+    display_urgency_chart,
+    display_ratings_chart,
+    display_map,
+)
+import tkinter as tk
+# from DC_settings import *
 
 background_dir = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 
@@ -16,12 +19,10 @@ class ScreenField():
         self.parent = parent
         self.bg_main = bg_main
         self.screen_frame = screen_frame
-        self.pad_x = 40
-        self.pad_y = 40
         
     
     def create_screen(self):
-         # Определяем вес ряда для отображения расширяемого контента
+        # Определяем вес ряда для отображения расширяемого контента
         self.parent.grid_rowconfigure(1, weight=80)
         
         # Load the background image
@@ -49,17 +50,17 @@ class ScreenField():
         self.create_screen()
         
         if data_type == 'df':
-            display_df(self.screen_frame, message, self.pad_x, self.pad_y)
+            display_df(self.screen_frame, message)
         elif data_type == 'text':
-            display_text(self.screen_frame, message, self.parent, self.pad_x, self.pad_y)
+            display_text(self.screen_frame, message, self.parent)
         elif data_type == 'status_chart':
-            display_status_chart(self.screen_frame, message, self.pad_x, self.pad_y)
+            display_status_chart(self.screen_frame, message)
         elif data_type == 'urgency_chart':
-            display_urgency_chart(self.screen_frame, message, self.pad_x, self.pad_y)
+            display_urgency_chart(self.screen_frame, message)
         elif data_type == 'ratings_chart':
-            display_ratings_chart(self.screen_frame, message, self.pad_x, self.pad_y)
+            display_ratings_chart(self.screen_frame, message)
         elif data_type == 'map':
-            display_map(self.screen_frame, message, self.pad_x, self.pad_y)
+            display_map(self.screen_frame, message)
       
     
     

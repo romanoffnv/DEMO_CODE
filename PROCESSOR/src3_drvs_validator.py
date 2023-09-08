@@ -1,5 +1,8 @@
-from __init__ import *
-from DC_settings import *
+import numpy as np
+import pandas as pd
+import re
+import time
+
 
 def main(src3_parse):
     # Присваиваем входящий датафрейм новой переменной
@@ -27,11 +30,6 @@ def main(src3_parse):
         # Определяем список допустимых буквенных значений
         legal_letters = ['А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х', 'а', 'в', 'е', 'к', 'м', 'н', 'о', 'р', 'с', 'т', 'у', 'х']
 
-        # Определяем архитектуру нейросети
-        input_dim = 4
-        hidden_dim = 4
-        output_dim = 1
-
         # Назначаем веса и коэфициенты смещения для первого скрытого слоя вручную
         weights1 = np.array([[1, 0.6, 0.7, 0.8],
                             [0.2, 0.3, 0.4, 0.5],
@@ -43,10 +41,6 @@ def main(src3_parse):
         # Определяем функцию активации нейронов в виде сигмоидной функции
         def sigmoid(x):
             return 1 / (1 + np.exp(-x))
-
-        # Определям параметры для цикла обучения
-        learning_rate = 0.1
-        epochs = 1000
 
         # Определям функцию валидации гос.номеров при помощи нейросети
         def is_valid_plate(plate):
@@ -92,9 +86,9 @@ def main(src3_parse):
     df_verif = pd.DataFrame(zip(col_1, valid_1, col_2, valid_2), columns = ['Plates_1', 'Verif_1', 'Plates_2', 'Verif_2'])
     
     # Обновлям датафрейм нулевыми значениями если гос.номер не прошел проверку на валидность
-    for index, (p1, v1, p2, v2) in df_verif[['Plates_1', 'Verif_1', 'Plates_2', 'Verif_2']].iterrows():
+    for index, (_, v1, p2, v2) in df_verif[['Plates_1', 'Verif_1', 'Plates_2', 'Verif_2']].iterrows():
         if np.any(v1 == False):
-           df_verif.at[index, 'Plates_1'] = np.nan
+            df_verif.at[index, 'Plates_1'] = np.nan
         elif np.any(v2 == False):
             df_verif.at[index, 'Plates_2'] = np.nan
     
@@ -102,7 +96,7 @@ def main(src3_parse):
     df_base = df_verif.loc[:, ['Plates_1', 'Plates_2']]
     
     # Сливаем 2 колонки по принципу "Валидный гос.номер остается, нулевое значение уходит"
-    for index, (p1, p2) in df_base[['Plates_1', 'Plates_2']].iterrows():
+    for index, (_, p2) in df_base[['Plates_1', 'Plates_2']].iterrows():
         if not pd.isna(p2):
             df_base.at[index, 'Plates_1'] = p2
             df_base.at[index, 'Plates_2'] = np.nan
@@ -114,7 +108,8 @@ def main(src3_parse):
     # Возвращаем датафрейм в _main.py
     return df
     
+        
 if __name__ == '__main__':
     main()
     start_time = time.time()
-    pprint("--- %s seconds ---" % (time.time() - start_time))
+    print(f'--- %s seconds --- % {(time.time() - start_time)}')
